@@ -1,0 +1,308 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+  background-color: rgb(249, 244, 233);
+  color: rgb(124, 113, 107);
+}
+
+.container {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grey-background {
+  background-color: #fafafa;
+}
+
+.beige-background {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background-color: rgb(249, 244, 233);
+}
+
+.upper-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 40%;
+  font-size: 1.2em;
+  padding: 1rem;
+  position: sticky;
+  z-index: 1000;
+}
+
+.upper-nav a {
+  text-decoration: none;
+  color: rgb(80, 80, 80);
+}
+
+.portfolio-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.portfolio-submenu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 2000;
+  pointer-events: none;
+  min-width: 180px;
+}
+
+.portfolio-submenu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.portfolio-submenu.fixed {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.portfolio-submenu a {
+  display: block;
+  padding: 10px 16px;
+  color: rgb(80, 80, 80);
+  text-decoration: none;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease;
+}
+
+.portfolio-submenu a:last-child {
+  border-bottom: none;
+}
+
+.portfolio-submenu a:hover {
+  background-color: rgb(174, 128, 145);
+  color: white;
+}
+
+.portfolio-submenu a:first-child {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.portfolio-submenu a:last-child {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+img{
+  width: 100px;
+}
+
+header {
+  position: fixed;
+  height: 15vh; /* 画面の高さの15% */
+  background-color: rgb(174, 128, 145);
+  color: white;
+  z-index: 1000;
+  text-align: center;
+}
+header * {
+  pointer-events: auto; /* header内の要素は操作可能 */
+}
+
+/* 進捗を示す擬似要素 */
+header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: var(--progress-width, 0%);
+  background: rgb(200, 150, 167);
+  transition: width 0.3s;
+  z-index: -1;
+}
+
+header h3 {
+  margin-top: 0;
+  padding-top: 1em;
+}
+
+.progress-bar {
+  position: sticky;
+  top: 0;
+  height: 100%;
+  background-color: rgb(200, 150, 167); /* より明るい色 */
+  transition: width 0.3s ease;
+}
+
+.abstract {
+  text-align: center;
+  color: #000;
+}
+
+.abstract h3 {
+  font-size: 4em;
+  margin-top: 1em;
+  margin-bottom: 0;
+}
+
+main {
+  flex: 1;
+  max-width: 720px;
+  margin-right: 2rem;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+}
+
+aside {
+  width: 250px;
+  position: sticky;
+  top: 15vh;
+  align-self: flex-start;
+  background: #fff;
+  padding: 1rem;
+  border-left: 6px solid rgb(174, 128, 145);
+  border-radius: 6px;
+  height: fit-content;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.container h1, .container h2 {
+  margin-top: 2rem;
+  border-bottom: 1px solid rgb(129, 91, 104);
+}
+
+nav ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+nav li {
+  margin-bottom: 0.5rem;
+}
+
+nav a {
+  text-decoration: none;
+  color: #7f8666;
+  font-size: 0.95rem;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+pre {
+  margin-bottom: 0;
+  width: 70%;
+  font-size:0.7em;
+}
+
+.table-of-contents {
+  margin-top: 30px;
+  padding: 20px;
+  font-size: 0.8em;
+  width: 70%;
+  border: 3px solid rgb(129, 91, 104);
+  background-color: #fafafa;
+}
+
+.table-of-contents a {
+  text-decoration: none;
+  color: rgb(124, 113, 107);
+}
+
+.table-of-contents a:hover {
+  text-decoration: underline;
+}
+
+.table-of-contents ul {
+  margin-bottom: 10px;
+}
+
+.table-of-contents-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgb(129, 91, 104);
+}
+
+.table-of-contents-header h3{
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.table-of-contents-header p {
+  margin: 0;
+}
+
+.table-of-contents h3 {
+  margin: 0;
+}
+
+.portfolio-dropdown:hover .portfolio-submenu,
+.portfolio-dropdown:focus-within .portfolio-submenu,
+.portfolio-submenu:hover,
+.portfolio-submenu:focus,
+.portfolio-submenu.fixed {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+#details.collapsed {
+  display: none;
+}
+
+.toggle-btn {
+  margin-top: 1em;
+  color: #5d5d5d;
+  background-color: #f0f0f0;
+  border: none;
+  padding: 0.6em 1em;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.toggle-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.harf-margin{
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+hr{
+  color: #7f8666;
+}
+
+.mobile-image{
+  width: 20%;
+  margin-left: 5%;
+  margin-right: 5%;
+  border: 1px solid #a4c5ca;
+}
+
+.row-images{
+  text-align: center;
+  width: 70%;
+  margin-left: 15%;
+}
+

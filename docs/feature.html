@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../assets/portfolio.css">
+  <script src="../submenu.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-dart.min.js"></script>
+
+  <title>技術スタック</title>
+</head>
+<body>
+  <header class="progress-bar">
+    <h3>portfolio/feature</h3>
+    <div class="center-container">
+      <div class="beige-background">
+        <div class="upper-nav">
+          <a href="../index.html">Home</a>
+          <div class="portfolio-dropdown">
+            <a href="#" id="portfolio-link" onclick="togglePortfolioFixed(event)">Portfolio</a>
+            <div id="portfolio-submenu" class="portfolio-submenu">
+              <a href="tech.html">技術スタック</a>
+              <a href="architecture.html">アプリケーション構造</a>
+              <a href="feature.html">主要機能</a>
+              <a href="overview.html">今後の展望</a>
+            </div>
+          </div>
+          <a href="profile.html">Profile</a>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="abstract">
+    <h3>🎍</h3>
+    <h1>主要機能</h1>
+    <h2>主要機能まとめ (2025/6 現在)</h2>
+  </div>
+  <div class="container">
+    <main>
+      <h2>主要機能</h2>
+      <h3>A. ユーザー登録/ログイン機能</h3>
+      <p>unreal.appでは、Supabase AuthとFirebase Authを組み合わせたセキュアな認証システムを提供しています。</p>
+      <div class="row-images">
+        <img src="../assets/images/signup.png" alt="サインアップ画面" class="mobile-image">
+        <img src="../assets/images/login.png" alt="ログイン画面" class="mobile-image">
+      </div>
+      <div class="center-container">
+        <button class="toggle-btn" onclick="toggleDetails()">▼ 詳細を表示</button>
+      </div>
+      <div id="details" class="collapsed">
+        <div class="grey-background">
+          <h4>ユーザー登録フロー</h4>
+      <div class="center-container">
+        <pre><code class="language-dart">
+  /// ユーザー登録処理
+  Future<void> signUp({
+    required String email,
+    required String password,
+    String? username,
+  }) async {
+    try {
+      state = state.copyWith(isLoading: true, error: null);
+
+      final AuthResponse response = await _client.auth.signUp(
+        email: email,
+        password: password,
+        data: <String, dynamic>{
+          if (username != null) 'name': username,
+          'username': username ?? 'ユーザー',
+        },
+      );
+
+      if (response.user != null) {
+        // ユーザープロフィールをusersテーブルに保存
+        await _client.from('users').insert(<String, dynamic>{
+          'id': response.user!.id,
+          'email': email,
+          'name': username ?? 'ユーザー',
+          'created_at': DateTime.now().toIso8601String(),
+        });
+
+        state = state.copyWith(user: response.user, isLoading: false);
+      }
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: _translateError(e.toString()),
+      );
+    }
+  }
+        </code></pre>
+      </div>
+      <h4>ログインフロー</h4>
+      <div class="center-container">
+        <pre><code class="language-dart">
+  /// ログイン処理
+  Future<void> signIn({required String email, required String password}) async {
+    try {
+      state = state.copyWith(isLoading: true, error: null);
+
+      final AuthResponse response = await _client.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+
+      if (response.user != null) {
+        state = state.copyWith(user: response.user, isLoading: false);
+        // ログイン成功時はロビーに自動遷移
+      }
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: _translateError(e.toString()),
+      );
+    }
+  }
+        </code></pre>
+      </div>
+        </div>
+      </div>
+      <p>認証システムでは、リアルタイムでの認証状態監視、日本語エラーメッセージ対応、メール確認リンクの再送信機能を提供し、ユーザビリティを重視した設計になっています。</p><hr>
+      <h3>B. ワンナイト人狼について</h3>
+      <p>ワンナイト人狼は、本アプリのメイン機能として実装されたリアルタイムマルチプレイヤーゲームです。</p>
+      
+      <h4>1.0 ゲーム作成</h4>
+      <p>ゲーム作成では、汎用的なGameRoomとワンナイト人狼専用のWerewolfRoomを同時に作成し、統合的に管理します。</p>
+      
+      <h5>裏側の処理</h5>
+      <div class="center-container">
+        <pre><code class="language-dart">
+    // 1. 汎用のGameRoomを作成（ルーム参加で検索できるように）
+    final GameRoom gameRoom = await roomService.createRoom(
+      name: roomName,
+      gameType: 'werewolf',
+      hostId: currentUser.id,
+      description: 'ワンナイト人狼のルーム',
+      isPrivate: false,
+    );
+  
+    // 2. ワンナイト人狼専用のルームを作成（ゲーム進行用）
+    final WerewolfRoom werewolfRoom = await gameService.createRoom(
+      hostId: currentUser.id,
+      hostName: userName,
+      roomName: roomName,
+      roomId: gameRoom.id, // 同じIDを使用して統合
+    );
+        </code></pre>
+      </div>
+      <p>この二重構造により、ルーム検索機能とゲーム進行ロジックを分離し、スケーラビリティを確保しています。作成されたルームには6桁のユニークなルームコードが自動生成され、他のプレイヤーが参加できるようになります。</p>
+      
+      **ここに画像を追加：ゲーム作成画面のスクリーンショット**
+  
+      <h4>1.1 ゲーム参加</h4>
+      <p>プレイヤーは6桁のルームコードを入力することで、既存のゲームルームに参加できます。</p>
+      
+      <h5>裏側の処理</h5>
+      <div class="center-container">
+        <pre><code class="language-dart">
+    // ルームコードでルームに参加
+    final GameRoom? room = await roomService.joinRoomByCode(
+      roomCode: codeController.text,
+      playerId: currentUser.id,
+    );
+  
+    // ワンナイト人狼の場合は、WerewolfRoomにもプレイヤーを追加
+    if (gameType == 'werewolf') {
+      final werewolfRoom = await werewolfRepository.getRoom(room.id);
+      if (werewolfRoom != null) {
+        await werewolfService.addPlayer(
+          werewolfRoom,
+          id: currentUser.id,
+          name: userName,
+          isBot: false,
+        );
+      }
+    }
+        </code></pre>
+      </div>
+      <p>参加処理では、まずGameRoomレベルでの参加確認を行い、その後ワンナイト人狼専用のWerewolfRoomにプレイヤー情報を同期します。エラーハンドリングにより、片方の処理が失敗してももう片方は継続されます。</p>
+      
+      **ここに画像を追加：ルーム参加画面のスクリーンショット**
+  
+      <h4>2.0 ゲーム開始</h4>
+      <p>ホストプレイヤーがゲーム開始ボタンを押すと、役職配布と夜フェーズへの移行が自動で実行されます。</p>
+      
+      <h5>裏側の処理</h5>
+      <div class="center-container">
+        <pre><code class="language-dart">
+    Future<WerewolfRoom> startGame(WerewolfRoom room) async {
+      if (room.players.length < 3) {
+        throw Exception('ゲームを開始するには最低3人のプレイヤーが必要です');
+      }
+  
+      // 役職の設定
+      final WerewolfRoom setupRoom = _setupRoles(room);
+      
+      // 夜フェーズに移行
+      final WerewolfRoom nightRoom = setupRoom.copyWith(
+        phase: GamePhase.night,
+        gameStartTime: DateTime.now(),
+      );
+  
+      // ボットの夜の行動を処理
+      final WerewolfRoom withBotActions = _botActions.processBotNightActions(nightRoom);
+      
+      await _repository.saveRoom(withBotActions);
+      return withBotActions;
+    }
+        </code></pre>
+      </div>
+      <p>ゲーム開始時に、基本役職（村人×2、人狼×2、占い師×1、怪盗×1）がランダムに配布され、プレイヤー数分の役職と中央カード用の役職が決定されます。同時にボットプレイヤーの夜の行動も自動処理されます。</p>
+      
+      **ここに画像を追加：ゲーム開始時の役職配布画面**
+  
+      <h4>3.0 夜のターン</h4>
+      <p>夜フェーズでは、各役職が秘密裏に行動を実行します。占い師は他プレイヤーまたは中央カードを占い、怪盗は他プレイヤーと役職交換を行います。</p>
+      
+      <h5>裏側の処理</h5>
+      <div class="center-container">
+        <pre><code class="language-dart">
+    // 夜フェイズの終了確認
+    bool isNightPhaseComplete(WerewolfRoom room) {
+      final List<WerewolfRole> actionRequiredRoles = [
+        WerewolfRole.seer,
+        WerewolfRole.thief,
+        WerewolfRole.werewolf,
+      ];
+  
+      final List<WerewolfPlayer> actionRequiredPlayers =
+          room.players.where((player) {
+            final role = room.currentRoles[player.id];
+            return role != null && actionRequiredRoles.contains(role);
+          }).toList();
+  
+      // 全ての行動必要プレイヤーが行動済みかチェック
+      return actionRequiredPlayers.every(
+        (player) => room.nightActions.containsKey(player.id),
+      );
+    }
+        </code></pre>
+      </div>
+      <p>夜の行動は`nightActions`マップで管理され、行動が必要な全役職（占い師、怪盗、人狼）の行動完了を監視しています。ボットプレイヤーは自動的にランダムな行動を実行し、人間プレイヤーの行動待ちを短縮します。</p>
+      
+      **ここに画像を追加：夜フェーズでの役職行動画面**
+  
+      <h4>4.0 昼のターン</h4>
+      <p>昼フェーズは議論時間（5分間）として実装され、プレイヤー間でのコミュニケーションタイムとなります。</p>
+  
+      <h4>4.1 投票のターン</h4>
+      <p>議論時間終了後、各プレイヤーは処刑したい相手に投票します。自分自身には投票できません。</p>
+  
+      <h4>4.2 結果発表</h4>
+      <p>全員の投票完了後、勝利陣営の判定とポイント計算が自動実行されます。</p>
+      
+      <h5>裏側の処理</h5>
+      <div class="center-container">
+        <pre><code class="language-dart">
+    WerewolfRoom calculateGameResult(WerewolfRoom room) {
+      // 投票の集計
+      final Map<String, int> voteCounts = {};
+      for (final vote in room.votes.values) {
+        voteCounts[vote] = (voteCounts[vote] ?? 0) + 1;
+      }
+  
+      // 最多得票者を特定
+      String? executedPlayerId;
+      int maxVotes = 0;
+      voteCounts.forEach((playerId, count) {
+        if (count > maxVotes) {
+          maxVotes = count;
+          executedPlayerId = playerId;
+        }
+      });
+  
+      // 勝利陣営の判定
+      String winningSide = '村人陣営';
+      if (executedPlayerRole == WerewolfRole.werewolf) {
+        winningSide = '村人陣営';
+      } else if (executedPlayerRole == WerewolfRole.tanner) {
+        winningSide = '吊り人';
+      } else {
+        winningSide = hasWerewolf ? '人狼陣営' : '村人陣営';
+      }
+  
+      // ポイント計算と結果フェーズに移行
+      final gamePoints = _calculatePoints(room, executedPlayerId, winningSide);
+      return room.copyWith(
+        phase: GamePhase.result,
+        winningSide: winningSide,
+        currentGamePoints: gamePoints,
+      );
+    }
+        </code></pre>
+      </div>
+      <p>投票集計では最多得票者が処刑され、その役職に応じて勝利陣営が決定されます。ポイントシステムでは勝利チームに2pt、役職固有のボーナスポイント（占い師が人狼を当てる、人狼が生き残るなど）が付与されます。</p>
+      
+      **ここに画像を追加：結果発表画面のスクリーンショット**
+  
+      <h4>5.0 ゲーム再開or中断</h4>
+      <p>結果発表後、プレイヤーは「調査継続」（次ゲーム開始）または「調査中断」（最終結果へ）を選択できます。</p>
+  
+      <h4>5.1 最終結果画面</h4>
+      <p>調査中断または誰かが目標ポイント（デフォルト20pt）に到達した場合、最終結果画面が表示されます。</p>
+      
+      <h5>裏側の処理</h5>
+      <div class="center-container">
+        <pre><code class="language-dart">
+    WerewolfRoom calculateFinalResults(WerewolfRoom room) {
+      // プレイヤーのポイントを更新
+      final updatedPlayers = room.players.map((player) {
+        final gamePoints = room.currentGamePoints[player.id] ?? 0;
+        
+        // ポイント履歴を更新
+        final updatedHistory = Map<String, double>.from(player.pointsHistory);
+        final gameKey = 'game_${DateTime.now().millisecondsSinceEpoch}';
+        updatedHistory[gameKey] = gamePoints;
+        
+        // 合計ポイントを更新
+        final newTotalPoints = player.points + gamePoints;
+        
+        return player.copyWith(
+          points: newTotalPoints,
+          pointsHistory: updatedHistory,
+        );
+      }).toList();
+  
+      // 最終結果表示フェーズに移行
+      return room.copyWith(
+        phase: GamePhase.final_result,
+        players: updatedPlayers,
+      );
+    }
+        </code></pre>
+      </div>
+      <p>最終結果では、各セッションのポイント獲得履歴と累計ポイントが表示され、プレイヤーの成績が永続化されます。この画面から「ロビーに戻る」を選択することで、新しいゲームセッションを開始できます。</p>
+      
+      **ここに画像を追加：最終結果画面のスクリーンショット**
+  
+      <h4>技術的特徴</h4>
+      <ul>
+        <li><strong>リアルタイム同期</strong>：SupabaseのStreamProvider機能によりゲーム状態が即座に全プレイヤーに反映</li>
+        <li><strong>ボット機能</strong>：人数不足時の自動補完とゲーム進行の円滑化</li>
+        <li><strong>フェーズ管理</strong>：Enumによる型安全なゲーム状態管理</li>
+        <li><strong>ポイントシステム</strong>：継続的なゲーム体験とプレイヤーモチベーション向上</li>
+        <li><strong>エラーハンドリング</strong>：ネットワーク障害やデータ不整合に対する堅牢性</li>
+      </ul>
+    </main>
+    <aside>
+      <nav>
+        <strong>目次</strong>
+        <ul>
+          <li><a href="#section1">概要</a></li>
+          <li><a href="#section2">フレームワーク</a></li>
+          <li><a href="#section3">バックエンド</a></li>
+          <ul>
+            <li><a href="#section4-1">Riverpod&Hooks</a></li>
+            <li><a href="#section4-2">GoRouter</a></li>
+            <li><a href="#section4-3">Supabase</a></li>
+          </ul>
+        </ul>
+      </nav>
+    </aside>
+  </div>
+</body>
+</html>

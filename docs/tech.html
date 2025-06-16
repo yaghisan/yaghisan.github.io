@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../assets/portfolio.css">
+  <script src="../submenu.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-dart.min.js"></script>
+
+  <title>技術スタック</title>
+</head>
+<body>
+  <header class="progress-bar">
+    <h3>portfolio/tech</h3>
+    <div class="center-container">
+      <div class="beige-background">
+        <div class="upper-nav">
+          <a href="../index.html">Home</a>
+          <div class="portfolio-dropdown">
+            <a href="#" id="portfolio-link" onclick="togglePortfolioFixed(event)">Portfolio</a>
+            <div id="portfolio-submenu" class="portfolio-submenu">
+              <a href="tech.html">技術スタック</a>
+              <a href="architecture.html">アプリケーション構造</a>
+              <a href="feature.html">主要機能</a>
+              <a href="overview.html">今後の展望</a>
+            </div>
+          </div>
+          <a href="profile.html">Profile</a>
+        </div>
+      </div>
+    </div>
+  </header>
+  </div>
+  <div class="abstract">
+    <h3>👺</h3>
+    <h1>技術スタック</h1>
+    <h2>技術スタックまとめ  (2025/6 現在)</h2>
+  </div>
+  <div class="container">
+    <main>
+      <!-- 概要 -->
+      <section>
+        <h2 id="section1">概要</h2>
+        <article>
+          <p>
+            unreal.appは、Flutterをベースに構築されたマルチプラットフォーム対応のゲーミングハブアプリケーションです。人狼ゲームなどのリアルタイム対戦型ゲームを中心に、拡張可能な設計を採用しています。<br>
+            本プロジェクトでは、RiverpodやSupabaseなどのモダンな技術スタックを活用し、リアルタイム性・スケーラビリティ・保守性を両立したアーキテクチャを構築しました。
+          </p>
+        </article>
+      </section>
+      <!-- 目次 -->
+      <h2>目次</h2>
+      <div class="center-container">
+        <section class="table-of-contents">
+          <div class="table-of-contents-header">
+            <h3>技術スタック構成（概要）</h3>
+            <p>以下に、主な技術スタックとその目的別の分類を紹介します。</p>
+          </div>
+          <ul>
+            <li>
+              <h3><a href="#section2">アーキテクチャ全体</a></h3>
+              <ul>
+                <li>状態管理・データ同期・UI反映を統合したリアルタイム対応型アーキテクチャ</li>
+              </ul>
+            </li>
+            <li>
+              <h3><a href="#section3">状態管理とUI制御</a></h3>
+              <ul>
+                <li>Riverpod（宣言的状態管理）</li>
+                <li>Flutter Hooks（ライフサイクルと組み合わせたUI構築）</li>
+              </ul>
+            </li>
+            <li>
+              <h3><a href="#section4">バックエンド・リアルタイム通信</a></h3>
+              <ul>
+                <li>Supabase（データベース・認証・リアルタイム機能）</li>
+                <li>Firebase Auth（認証補完）</li>
+              </ul>
+            </li>
+            <li>
+              <h3><a href="#section5">画面遷移・ルーティング</a></h3>
+              <ul>
+                <li>GoRouter（パラメトライズされたルート構成）</li>
+              </ul>
+            </li>
+            <li>
+              <h3><a href="#section6">ローカルデータ管理</a></h3>
+              <ul>
+                <li>Hive（高速ストレージ）</li>
+                <li>SharedPreferences（設定値管理）</li>
+              </ul>
+            </li>
+            <li>
+              <h3><a href="section7">モデル生成とシリアライズ</a></h3>
+              <ul>
+                <li>Freezed & JSON Serializable（型安全なデータモデル）</li>
+              </ul>
+            </li>
+            <li>
+              <h3><a href="#section8">API通信とログ管理</a></h3>
+              <ul>
+                <li>Retrofit + Dio（HTTP通信）</li>
+                <li>Logger（エラー管理・デバッグ補助）</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+      </div>
+      <!-- アーキテクチャ全体 -->
+      <section>
+        <h2 id="section2">アーキテクチャ全体</h2>
+        <p></p>本プロジェクトでは、クリーンアーキテクチャとフィーチャー駆動設計（Feature-Driven Design）をベースに、プレゼンテーション・アプリケーション・ドメイン・インフラの4層で構成されたモジュール設計を採用しています。</p>
+        <p>アプリ全体の設計思想やディレクトリ構成、各層の責務などの詳細については、以下のページをご覧ください。</p>
+        <p>👉 <a href="architecture.html">アプリケーション構造</a></p>
+      </section>
+      <!-- 状態管理とUI制御 -->
+      <section>
+        <h2 id="section3">状態管理とUI制御</h2>
+        <p>本プロジェクトでは、RiverpodとFlutter Hooksを組み合わせることで、宣言的で再利用性の高い状態管理構成を実現しています。以下、使用バージョンを記載します。</p>
+
+        <div class="center-container grey-background">
+          <p>
+            dependencies:<br>
+            flutter_riverpod: ^2.4.9<br>
+            hooks_riverpod: ^2.4.9<br>
+            flutter_hooks: ^0.20.3<br>
+          </p>
+        </div>
+
+        <h3>なぜこの構成を採用したか？</h3>
+
+        <p>Riverpod（hooks_riverpod）により、グローバルな状態管理を安全に実装しつつ、依存性の明示的管理を可能にしました。</p>
+        <p>HookWidget / HookConsumerWidgetを活用することで、ライフサイクルと状態の結びつきを簡潔に保てます。</p>
+
+        <h3>実装例：認証状態を管理するProviderの定義</h3>
+
+        <div class="center-container">
+          <pre>
+            <code class="language-dart">
+  // 認証状態を表すクラス
+  class AuthState {
+    final User? user;
+    final bool isLoading;
+    final String? error;
+
+    AuthState({this.user, this.isLoading = false, this.error});
+    ...
+  }
+
+
+  // 認証状態を管理する StateNotifierProvider
+  final authStateProvider = StateNotifierProvider<AuthNotifier, AuthState>(
+    (ref) => AuthNotifier(),
+  );
+            </code>
+          </pre>
+        </div>
+        <h3>実装例：認証状態の管理</h3>
+        <div class="center-container">
+          <pre>
+            <code class="language-dart">
+  //ログイン状態
+  class LoginScreen extends HookConsumerWidget {
+    const LoginScreen({super.key});
+
+    @override
+    Widget build(BuildContext context, WidgetRef ref) {
+      final authState = ref.watch(authStateProvider);
+
+      if (authState.isLoading) {
+        return const CircularProgressIndicator();
+      }
+
+      return Column(
+        children: [
+          Text(authState.user?.email ?? '未ログイン'),
+          ElevatedButton(
+            onPressed: () => ref.read(authStateProvider.notifier).signOut(),
+            child: const Text('サインアウト'),
+          ),
+        ],
+      );
+    }
+  }
+            </code>
+          </pre>
+        </div>
+      </section>
+      <!-- バックエンド・リアルタイム通信 -->
+      <section>
+        <h2 id="section4">バックエンド・リアルタイム通信</h2>
+        本プロジェクトでは、バックエンドサービスに Supabase を採用しています。Supabaseは、リアルタイム同期機能やユーザー認証、ストレージ、PostgreSQLベースのリレーショナルデータベースなどを統合的に提供するBaaS（Backend as a Service）であり、Flutterとの親和性が高いため、本プロジェクトに採用しました。
+        <p>主な用途は以下のとおりです：</p>
+        <ul>
+          <li>ユーザー認証：メールアドレスとパスワードによるアカウント登録とログイン機能</li>
+          <li>データベース操作：ゲームルームやプレイヤー情報の保存・更新</li>
+          <li>リアルタイム同期：ゲームフェーズや投票状況の即時反映</li>
+          <li>ストレージ機能：将来的なユーザー投稿画像などの保存を想定</li>
+        </ul>
+      </section>
+      <!-- 画面遷移とルーティング -->
+      <section>
+        <h2 id="section5">画面遷移とルーティング</h2>
+        <p>画面遷移の管理には、Flutter公式推奨の GoRouter を採用しています。</p>
+        <p>現在は、以下のような実装方針で導入しています：</p>
+        <ul>
+          <li>通常のGoRouteを使用し、ShellRoute や deferred（遅延読み込み）は未使用</li>
+          <li>/game/werewolf/:roomId/:playerId など、ルームやユーザーごとのパラメータ付きパスを使用</li>
+          <div class="center-container">
+            <pre>
+              <code class="language-dart">
+  // ワンナイト人狼ゲームのルーム画面
+  GoRoute(
+    path: '/game/werewolf/:roomId/:playerId',
+    builder: (BuildContext context, GoRouterState state) {
+      final String roomId = state.pathParameters['roomId']!;
+      final String playerId = state.pathParameters['playerId']!;
+      return WerewolfRoomScreen(roomId: roomId, playerId: playerId);
+    },
+  ),
+              </code>
+            </pre>
+          </div>
+          <li>ディープリンク対応：/room/:roomCode のように、URLから直接特定のルームに遷移できる設計を採用</li>
+        </ul>
+        <p>これらのルーティング手法により、Webやモバイルのいずれにおいても「共有可能なリンク」「戻る・進む」の操作が直感的に行えるようになっています。</p>
+      </section>
+      <!-- ローカルデータ管理 -->
+      <section>
+        <h2 id="section6">ローカルデータ管理</h2>
+        <p>本プロジェクトでは、将来的なローカルデータの保存およびユーザー設定の永続化に備え、Hive および SharedPreferences を依存関係として定義しています。</p>
+        <p><b>現時点ではローカルデータ管理の導入は計画段階であり、実装されていないことにご注意ください。</b></p>
+        <button class="toggle-btn" onclick="toggleDetails()">▼ 詳細を表示</button>
+        <div id="details" class="collapsed">
+          <div class="grey-background">
+            <p>現時点では、以下の状況です：</p>
+          <ul>
+            <li>Hive：依存関係には含まれているものの、現時点での実装は未着手。大容量データのキャッシュや履歴保存などへの適用を検討しています。</li>
+            <li>SharedPreferences：ユーザー設定値の保存等（例：サウンドのON/OFF切り替えなど）に利用する予定です。</li>
+          </ul>
+          <p>将来的には、以下のような機能が想定されています：</p>
+          <ul>
+            <li>ゲーム設定のローカル保存（例：最終プレイ設定の再適用）</li>
+            <li>ユーザーごとのカスタマイズ設定（例：UIテーマやボリューム設定）</li>
+            <li>オフライン時のプレイ履歴保持（Hive利用）</li>
+          </ul>
+          </div>
+        </div>
+      </section>
+      <!-- モデル生成とシリアライズ -->
+      <section>
+        <h2 id="section7">モデル生成とシリアライズ</h2>
+        <p>
+          データモデルは Freezed と json_serializable を併用して定義しています。
+          イミュータブルかつ型安全な構造と、build_runner による自動生成を通じて、保守性と可読性を両立させています。
+        </p>
+        <h3>採用技術と目的</h3>
+        <ul class="harf-margin">
+          <li><strong>Freezed：</strong> copyWith / == / hashCode / toString の自動生成によるボイラープレート削減とイミュータブルなモデル構築</li>
+          <li><strong>json_serializable：</strong> JSON のパース/シリアライズ処理を簡潔に自動化</li>
+        </ul>
+        <h3>利用例</h3>
+        <ul class="harf-margin">
+          <li>WerewolfRoom / GroupMember / GameRoomInfo などのモデルに @freezed を付与</li>
+          <li>Supabase・Retrofit との連携における fromJson / toJson の簡素化</li>
+          <li>build_runner によるモデルの再生成・メンテナンスの自動化</li>
+        </ul>
+      </section>
+      <!-- API通信とログ管理 -->
+      <section>
+        <h2 id="section8">API通信とログ管理</h2>
+        <p>
+          API通信には Retrofit + Dio を採用し、型安全で見通しの良い通信層を構成しています。また、Loggerにより開発・運用を通じた一貫したログ出力を確保しています。
+        </p>
+        <h3>現状の構成</h3>
+        <ul class="harf-margin">
+          <li>RoomServiceにて Supabaseまたは HTTP API を介したルーム情報の作成・取得を実装</li>
+          <li>エラーハンドリングは try-catchにより処理し、logger.e(...)で記録</li>
+          <li>通信ロジックは Riverpod Provider経由で注入し、モジュール性とテスタビリティを両立</li>
+        </ul>
+
+        <h3>今後の拡張予定</h3>
+        <p>Cursor環境での適用を見据え、以下のような設計改善を計画しています。</p>
+
+        <h4>1. Retrofitインターフェースの明示的定義</h4>
+        <div class="center-container">
+          <pre>
+            <code class="language-dart">
+  @RestApi(baseUrl: "https://api.example.com")
+  abstract class ApiClient {
+    factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
+
+    @GET("/rooms")
+    Future<List<Room>> getRooms();
+
+    @POST("/rooms")
+    Future<Room> createRoom(@Body() Room room);
+  }
+            </code>
+          </pre>
+        </div>
+        <p>
+          明示的なインターフェース定義により、通信仕様が明文化され、Swaggerとの連携や依存のMock化が容易になります。
+        </p>
+        <h4>2. カスタムエラーハンドリング</h4>
+        <div class="center-container">
+          <pre>
+            <code class="language-dart">
+  class ApiException implements Exception {
+    final String message;
+        final int? statusCode;
+        final dynamic data;
+
+    ApiException(this.message, {this.statusCode, this.data});
+  }
+            </code>
+          </pre>
+        </div>
+        <p>
+          HTTPエラーを独自例外に変換することで、UIレイヤーでの制御やログの一元管理が可能になります。
+        </p>
+      </section>
+    </main>
+    <aside>
+      <nav>
+        <strong>目次</strong>
+        <ul>
+          <li><a href="#section1">概要</a></li>
+          <li><a href="#section2">アーキテクチャ全体</a></li>
+          <li><a href="#section3">状態管理とUI制御</a></li>
+          <li><a href="#section4">バックエンド・リアルタイム通信</a></li>
+          <li><a href="#section5">画面遷移・ルーティング</a></li>
+          <li><a href="#section6">ローカルデータ管理</a></li>
+          <li><a href="#section7">モデル生成とシリアライズ</a></li>
+          <li><a href="#section8">PI通信とログ管理</a></li>
+        </ul>
+      </nav>
+    </aside>
+  </div>
+</body>
+</html>

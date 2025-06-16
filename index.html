@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>タイトル</title>
+  <link rel="stylesheet" href="../assets/index.css">
+  <script src="script.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- 左パネル -->
+    <div id="left-panel" class="left-panel">
+      <div class="logo">
+        <img src="assets/images/logo.png" alt="ロゴ" class="logo-image">
+        <h1>UNREAL</h1>
+        <p>UNREALは、複数のゲームを提供する<br>Flutterベースのモバイルアプリケーションです。</p>
+      </div>
+    </div>
+    <!-- メインナビ -->
+    <div id="right-panel" class="right-panel">
+      <ul class="menu">
+        <li onclick="showHome()">Home</li>
+        <li onclick="showPortfolio()">Portfolio</li>
+        <li onclick="goToProfile()">Profile</li>
+      </ul>
+    </div>
+    <!-- Portfolio選択時に表示されるサブメニュー -->
+    <div id="sub-panel" class="sub-panel">
+      <ul class="menu">
+        <li onclick="loadContent('tech')">技術スタック</li>
+        <li onclick="loadContent('architecture')">アプリケーション構造</li>
+        <li onclick="loadContent('feature')">主要機能</li>
+        <li onclick="loadContent('overview')">今後の展望</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

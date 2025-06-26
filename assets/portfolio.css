@@ -302,7 +302,12 @@ hr{
 
 .row-images{
   text-align: center;
-  width: 70%;
-  margin-left: 15%;
+  width: 80%;
+  margin-left: 10%;
+}
+
+.fixed-image{
+  height: 264px;
+  width: 117px;
 }
 
